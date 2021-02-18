@@ -36,24 +36,6 @@ class Genre(models.Model):
         verbose_name_plural = "Жанры"
 
 
-class Album(models.Model):
-    title = models.CharField(max_length=255, verbose_name="Название")
-    slug = models.SlugField(verbose_name="Идентификатор")
-    album_pic = models.ImageField(upload_to="pictures/albums", blank=True, default="pictures/albums/default.jpg",
-                                  verbose_name="Картинка")
-    artists = models.ManyToManyField(Artist, verbose_name="Исполнители")
-    release_date = models.DateField(verbose_name="Дата выхода")
-    created_at = models.DateTimeField(default=timezone.now, verbose_name="Дата создания")
-
-    def __str__(self):
-        title = str(self.title)
-        return title
-
-    class Meta:
-        verbose_name = "Альбом"
-        verbose_name_plural = "Альбомы"
-
-
 class Song(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
     title = models.CharField(max_length=255, verbose_name="Название")
@@ -76,6 +58,25 @@ class Song(models.Model):
     class Meta:
         verbose_name = "Композиция"
         verbose_name_plural = "Композиции"
+
+
+class Album(models.Model):
+    title = models.CharField(max_length=255, verbose_name="Название")
+    slug = models.SlugField(verbose_name="Идентификатор")
+    album_pic = models.ImageField(upload_to="pictures/albums", blank=True, default="pictures/albums/default.jpg",
+                                  verbose_name="Картинка")
+    artists = models.ManyToManyField(Artist, verbose_name="Исполнители")
+    songs = models.ForeignKey(Song, on_delete=models.DO_NOTHING, related_name="Композиции")
+    release_date = models.DateField(verbose_name="Дата выхода")
+    created_at = models.DateTimeField(default=timezone.now, verbose_name="Дата создания")
+
+    def __str__(self):
+        title = str(self.title)
+        return title
+
+    class Meta:
+        verbose_name = "Альбом"
+        verbose_name_plural = "Альбомы"
 
     # def save(self, *args, **kwargs):
     #     self.slug = slugify(self.title)
