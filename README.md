@@ -1,2 +1,4 @@
 # inel_music
-Web application on django rest framework
+Web application for listening to music
+
+Technologies: Python, Django DRF
